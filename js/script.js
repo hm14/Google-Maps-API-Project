@@ -11,4 +11,12 @@ function initMap() {
 		map: map,
 		title: 'My point'
 	});
+	
+		var popupinfo = new google.maps.InfoWindow({
+		content: 'You got me!'
+	});
+	
+	marker.addListener('click', function() {
+		popupinfo.open(map, marker);
+	});
 }
