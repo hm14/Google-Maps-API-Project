@@ -8,31 +8,31 @@ var popupinfo = [];
 var locations = [
 	{
 		name: 'Central Library',
-		address: 'MD',
+		address: '10375 Little Patuxent Pkwy,' + '<br>' + ' Columbia, MD 21044',
 		position: {lat: 39.221, lng: -76.860},
 		imgUrl: ''
 	},
 	{
 		name: 'Miller Library',
-		address: 'MD',
+		address: '9421 Frederick Rd,' + '<br>' + 'Ellicott City, MD 21042',
 		position: {lat: 39.272, lng: -76.841},
 		imgUrl: ''
 	},
 	{
 		name: 'Elkridge Library',
-		address: 'MD',
+		address: '7071 Montgomery Rd,' + '<br>' + 'Elkridge, MD 21075',
 		position: {lat: 39.211, lng: -76.735},
 		imgUrl: ''
 	},
 	{
 		name: 'Glenwood Library',
-		address: 'MD',
+		address: '2350 MD-97,' + '<br>' + 'Cooksville, MD 21723',
 		position: {lat: 39.306, lng: -77.024},
 		imgUrl: ''
 	},
 	{
 		name: 'Savage Library',
-		address: 'MD',
+		address: '9525 Durness Ln,' + '<br>' + 'Laurel, MD 20723',
 		position: {lat: 39.132, lng: -76.838},
 		imgUrl: ''
 	}
@@ -58,6 +58,7 @@ function initMap() {
 			map: map,
 			description: description,
 			//icon: 'https://d30y9cdsu7xlg0.cloudfront.net/png/191-200.png',
+			// https://developers.google.com/maps/documentation/javascript/markers
 			animation: google.maps.Animation.DROP,
 			id: i
 		});
@@ -71,6 +72,9 @@ function initMap() {
 		});
 	}
 	map.fitBounds(bounds);
+
+	// document.getElementById('show').addEventListener('click', showLibraries);
+	// document.getElementById('hide').addEventListener('click', hideLibraries);	
 }	
 
 	function populateInfoWindow(marker, infowindow) {
