@@ -8,26 +8,31 @@ var popupinfo = [];
 var locations = [
 	{
 		name: 'Central Library',
+		address: 'MD',
 		position: {lat: 39.221, lng: -76.860},
 		imgUrl: ''
 	},
 	{
 		name: 'Miller Library',
+		address: 'MD',
 		position: {lat: 39.272, lng: -76.841},
 		imgUrl: ''
 	},
 	{
 		name: 'Elkridge Library',
+		address: 'MD',
 		position: {lat: 39.211, lng: -76.735},
 		imgUrl: ''
 	},
 	{
 		name: 'Glenwood Library',
+		address: 'MD',
 		position: {lat: 39.306, lng: -77.024},
 		imgUrl: ''
 	},
 	{
 		name: 'Savage Library',
+		address: 'MD',
 		position: {lat: 39.132, lng: -76.838},
 		imgUrl: ''
 	}
@@ -46,12 +51,13 @@ function initMap() {
 	for(i=0; i<locations.length; i++) {
 		// get position and name for each location from locations[]
 		var position = locations[i].position;
-		var name = locations[i].name;
+		var description = locations[i].name + '<br>' + locations[i].address;
 		// create a merker for each location
 		var marker = new google.maps.Marker({
 			position: position,
 			map: map,
-			name: name,
+			description: description,
+			//icon: 'https://d30y9cdsu7xlg0.cloudfront.net/png/191-200.png',
 			animation: google.maps.Animation.DROP,
 			id: i
 		});
@@ -71,7 +77,7 @@ function initMap() {
 		// check if infowindow is already open on current marker
 		if(infowindow.marker != marker) {
 			infowindow.marker =  marker;
-			infowindow.setContent('<div>' + marker.name + '</div>');
+			infowindow.setContent('<div>' + marker.description + '</div>');
 			infowindow.open(map, marker);
 			// clear marker is cleared if infowindow is closed
 			infowindow.addListener('closeclick', function() {
