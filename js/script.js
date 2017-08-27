@@ -41,6 +41,7 @@ function initMap() {
 	});
 
 	var largeInfowindow = new google.maps.InfoWindow();
+	var bounds = new google.maps.LatLngBounds();
 
 	for(i=0; i<locations.length; i++) {
 		// get position and name for each location from locations[]
@@ -56,11 +57,15 @@ function initMap() {
 		});
 	// add newly created marker to markers[]
 	markers.push(marker);
+	// extend bounds of map for all markers
+	bounds.extend(marker.position);
 	// create and attach onclick event to open an infowindow for each marker
 	marker.addListener('click', function() {
 		populateInfoWindow(this, largeInfowindow);
 		});
 	}
+	map.fitBounds(bounds);
+}	
 
 	function populateInfoWindow(marker, infowindow) {
 		// check if infowindow is already open on current marker
@@ -74,4 +79,4 @@ function initMap() {
 			});
 		}
 	}
-}
+
