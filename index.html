@@ -1,20 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<html>
-	<head>
-	    <meta charset="UTF-8">
-		<title>My Libraries Project</title>
-	    <link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
-		<h2>My Libraries Project</h2>
-		<!-- <div id="list">location list</div> -->
-		<div id="map"></div>
 
-	    <script src="js/script.js"></script>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<link rel="stylesheet" type="text/css" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+		<title>Study Sites</title>
+	</head>
+
+	<body>
+		<container class="container">
+			<section class="content">
+				<div class="menu">
+						<h3 id="title">
+							Study Sites
+						</h3>
+						<form id="input-form">
+							<input type="text" name="location" id="filter-box"> 
+							Filter<br>
+						</form>
+<!-- 						<ul data-bind="foreach: catList" id="cat-list">
+							<li data-bind= "text: name, click: $parent.setCat"></li>
+						</ul> -->
+						<br><br><br><br><br><br><br><br>
+						<br><br><br><br><br><br><br><br>
+						<br><br><br><br><br><br><br><br>
+				</div>
+				<div class="map" id="map">
+				</div>
+			</section>
+
+		</container>
+		<script src="lib/knockout-3.4.2.js"></script>
+		<script src="js/script.js"></script>
 		<script async defer 
 			src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap">
 		</script>
 	</body>
-	<!-- my api key = AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE -->
 </html>
