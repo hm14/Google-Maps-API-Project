@@ -92,4 +92,27 @@ function populateInfoWindow(marker, infowindow) {
 	}
 }
 
+var Location = function(data) {
+	var self = this;
+	self.name = ko.observable(data.name);
+	self.address = ko.observable(data.address);
+	self.position = ko.observable(data.position);
+	self.imgUrl = ko.observable(data.imgUrl);	
+}
+
+// VIEW MODEL
+
+var ViewModel = function() {
+	var self = this;
+
+	self.locationList = ko.observableArray([]);
+
+	locations.forEach(function(location) {
+		self.locationList.push(new Location(location));
+	});
+
+};
+
+var vm = new ViewModel();
+ko.applyBindings(vm);
 
