@@ -1,3 +1,5 @@
+// MODEL
+
 var map;
 var markers = [];
 var popupinfo = [];
@@ -77,16 +79,17 @@ function initMap() {
 	// document.getElementById('hide').addEventListener('click', hideLibraries);	
 }	
 
-	function populateInfoWindow(marker, infowindow) {
-		// check if infowindow is already open on current marker
-		if(infowindow.marker != marker) {
-			infowindow.marker =  marker;
-			infowindow.setContent('<div>' + marker.description + '</div>');
-			infowindow.open(map, marker);
-			// clear marker is cleared if infowindow is closed
-			infowindow.addListener('closeclick', function() {
-				infowindow.setMarker(null);
-			});
-		}
+function populateInfoWindow(marker, infowindow) {
+	// check if infowindow is already open on current marker
+	if(infowindow.marker != marker) {
+		infowindow.marker =  marker;
+		infowindow.setContent('<div>' + marker.description + '</div>');
+		infowindow.open(map, marker);
+		// clear marker is cleared if infowindow is closed
+		infowindow.addListener('closeclick', function() {
+			infowindow.setMarker(null);
+		});
 	}
+}
+
 
