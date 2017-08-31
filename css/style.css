@@ -1,18 +1,144 @@
-html, body {
-	font-family: Arial, sans-serif;
-	height: 100%;
-	margin: 0;
-	padding: 0;
+*{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 }
-h2 {
+
+body {
+	color: black;
+	background-color: #f0f0f0;
+	font-family: fantasy;
+}
+
+h3 {
 	text-align: center;
-	color: lightblue;
+	color: #0F0F0F;
+	background-color: #FFFFFF;
+	font-size: 20px;
+	/*border: 1px solid #808080;*/
+	border-radius: 7px;
+	margin-left: 3px;
+	margin-right: 3px;
 }
+
+.container {
+	display: flex;
+	display: -webkit-flex;
+	flex-wrap: wrap;
+}
+
+.content {
+	width: 100%;
+	display: flex; 
+	/* makes columns stand next to one another 
+	and not stack up one on top of another */
+	flex-wrap: wrap;
+	border: 2px solid #99c5d2;
+	border-radius: 20px;  
+	margin-bottom: 3px;
+}
+
+.menu {
+	background-color: #99c5d2;
+}
+
+.menu, .map {
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 20px;
+}
+
 #map {
 	height: 100%;
-	/*width: 80%;*/
 }
-#list {
-	height: 100%;
-	width: 15%;
+
+#filter-box{
+	border: 1px solid #99c5d2;
+	border-radius: 7px;
+	margin-left: 3px;
+	margin-right: 3px;
+	width: 100px;
+	height: 30px;
+}
+
+#location {
+	text-align: center;
+}
+
+#location-name {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#location-image {
+	height: 100px;
+	border: 1px;
+	border-radius: 3px;
+}
+
+/* Media Queries */
+
+@media only screen and (min-width:500px) {
+	#title {
+		text-transform: uppercase;
+	}
+	.menu, .map {
+		width: 100%;
+	}
+}
+
+@media only screen and (min-width:700px) {
+	#location-image {
+		height: 120px;
+	}
+	.menu {
+		width: 25%;
+		font-size: 18px;
+	}
+	 .map {
+		width: 75%;
+	} 
+}
+
+@media only screen and (min-width:870px) {
+	#filter-box{
+		width: 200px;
+	}
+	#location-image {
+		height: 140px;
+	}
+	.menu {
+		width: 25%;
+		font-size: 22px;
+	}
+	 .map {
+		width: 75%;
+	}	
+	.container {
+        width: 100%;
+        margin-left: auto;
+        margin-right:auto;
+    }
+}
+
+@media only screen and (min-width:970px) {
+	#filter-box{
+		width: 200px;
+	}
+	#location-image {
+		height: 160px;
+	}
+	.menu {
+		/*width: 25%;*/
+		font-size: 24px;
+	}
+	 .map {
+		width: 75%;
+	}	
+	.container {
+        width: 100%;
+        margin-left: auto;
+        margin-right:auto;
+    }
 }
