@@ -104,7 +104,7 @@ function populateInfoWindow(marker, infowindow) {
 		infowindow.open(map, marker);
 		// clear marker is cleared if infowindow is closed
 		infowindow.addListener('closeclick', function() {
-			infowindow.setMarker(null);
+			infowindow.setMarker = null;
 		});
 	}
 }
