@@ -17,16 +17,24 @@
 						<h3 id="title">
 							Study Sites
 						</h3>
+
 						<form id="input-form">
 							<input type="text" name="location" id="filter-box"> 
 							Filter<br>
 						</form>
 
 						<ul data-bind="foreach: locationList" id="location-list">
-							<li data-bind= "text: name"></li>
+							<li data-bind= "text: name, click: $parent.setLocation"></li>
 						</ul>
-						<br><br><br><br><br><br><br><br>
-						<br><br><br><br><br><br><br><br>
+
+						<div data-bind="with: currentLocation()" id="location">
+							<div data-bind="text: name" id="location-name"></div>
+							<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
+							<div data-bind="text: streetAddress" id="location-address"></div>
+							<div data-bind="text: cityAndZip" id="location-address"></div>
+						</div>
+						<br><br><br><br><br>
+						<!-- <br><br><br><br><br><br><br> -->
 				</div>
 				<div class="map" id="map">
 				</div>
