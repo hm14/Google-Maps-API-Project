@@ -14,27 +14,23 @@
 		<container class="container">
 			<section class="content">
 				<div class="menu">
-						<h3 id="title">
-							Study Sites
-						</h3>
+					<h3 id="title">
+						Study Sites
+					</h3>
+					<input type="input" name="search" data-bind="textInput: search"></input>
+					
+					<ul data-bind="foreach: locationList" id="location-list">
+						<li data-bind= "text: name, click: $parent.setLocation"></li>
+					</ul>
 
-						<form id="input-form">
-							<input type="text" name="location" id="filter-box"> 
-							Filter<br>
-						</form>
-
-						<ul data-bind="foreach: locationList" id="location-list">
-							<li data-bind= "text: name, click: $parent.setLocation"></li>
-						</ul>
-
-						<div data-bind="with: currentLocation()" id="location">
-							<div data-bind="text: name" id="location-name"></div>
-							<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
-							<div data-bind="text: streetAddress" id="location-address"></div>
-							<div data-bind="text: cityAndZip" id="location-address"></div>
-						</div>
-						<br><br><br><br><br>
-						<!-- <br><br><br><br><br><br><br> -->
+					<div data-bind="with: currentLocation()" id="location">
+						<div data-bind="text: name" id="location-name"></div>
+						<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
+						<div data-bind="text: streetAddress" id="location-address"></div>
+						<div data-bind="text: cityAndZip" id="location-address"></div>
+					</div>
+					<br><br><br><br><br>
+					<br><br><br><br><br><br>
 				</div>
 				<div class="map" id="map">
 				</div>
@@ -44,7 +40,7 @@
 		<script src="lib/knockout-3.4.2.js"></script>
 		<script src="js/script.js"></script>
 		<script async defer 
-			src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap">
+			src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap" onerror="googleMapsAPIError()">
 		</script>
 	</body>
 </html>
