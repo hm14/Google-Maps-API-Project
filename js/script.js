@@ -1,52 +1,177 @@
-<!doctype html>
-<html lang="en">
+// MODEL
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="css/styles.css">
-		<link rel="stylesheet" type="text/css" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-		<title>Study Sites</title>
-	</head>
+var map;
+var markers = [];
+var popupinfo = [];
 
-	<body>
-		<container class="container">
-			<section class="content">
-				<div class="menu">
-					<h3 id="title">
-						Study Sites
-					</h3>
+// list of locations that will be visible on map as points
+// each location in list will be shown as a marker
+// each marker will show popupinfo upon clicking
+var locations = [
+	{
+		name: 'Central Library',
+		streetAddress: '10375 Little Patuxent Pkwy',
+		cityAndZip: 'Columbia, MD 21044',
+		position: {lat: 39.221, lng: -76.860},
+		imgUrl: 'http://www.hoodpad.com/img/site/b1a93c4e735.jpg',
+		id: 0
+	},
+	{
+		name: 'Miller Library',
+		streetAddress: '9421 Frederick Rd',
+		cityAndZip: 'Ellicott City, MD 21042',
+		position: {lat: 39.272, lng: -76.841},
+		imgUrl: 'http://www.columbiaengineering.com/Lists/Photos/Libraries/Miller%20Branch%20Library.jpg',
+		id: 1
+	},
+	{
+		name: 'Elkridge Library',
+		streetAddress: '7071 Montgomery Rd',
+		cityAndZip: 'Elkridge, MD 21075',
+		position: {lat: 39.211, lng: -76.735},
+		imgUrl: 'http://www.trbimg.com/img-535f9d2d/turbine/ph-elkridge-library',
+		id: 2
+	},
+	{
+		name: 'Glenwood Library',
+		streetAddress: '2350 MD-97',
+		cityAndZip: 'Cooksville, MD 21723',
+		position: {lat: 39.306, lng: -77.024},
+		imgUrl: 'https://s3.amazonaws.com/fun-dn.com/upload/620059_78805a-9c36edfc_large.jpg',
+		id: 3
+	},
+	{
+		name: 'Savage Library',
+		streetAddress: '9525 Durness Ln',
+		cityAndZip: 'Laurel, MD 20723',
+		position: {lat: 39.132, lng: -76.838},
+		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
+		id: 4
+	}
+];
 
-					<form id="input-form">
-<!-- <input id="input" placeholder="Search…" type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>						 -->
-						<!-- <input type="input" name="filter" data-bind="textInput: query, valueUpdate: 'keydown'" id="filter-box" placeholder="Enter search term..." > </input> -->
-						<input type="input" name="filter" id="filter-box" placeholder="Enter search term..." > </input>
-						<!-- Filter<br> -->
-					</form>
+var Location = function(data) {
+	var self = this;
+	self.name = ko.observable(data.name);
+	self.streetAddress = ko.observable(data.streetAddress)
+	self.cityAndZip = ko.observable(data.cityAndZip);
+	self.position = ko.observable(data.position);
+	self.imgUrl = ko.observable(data.imgUrl);
+	self.id = ko.observable(data.id);
+}
 
-					<ul data-bind="foreach: locationList" id="location-list">
-						<li data-bind= "text: name, click: $parent.setLocation"></li>
-					</ul>
+// VIEW MODEL
 
-					<div data-bind="with: currentLocation()" id="location">
-						<div data-bind="text: name" id="location-name"></div>
-						<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
-						<div data-bind="text: streetAddress" id="location-address"></div>
-						<div data-bind="text: cityAndZip" id="location-address"></div>
-					</div>
-					<br><br><br><br><br>
-						<!-- <br><br><br><br><br><br><br> -->
-				</div>
-				<div class="map" id="map">
-				</div>
-			</section>
+function initMap() {
+	// creates a new map with given center and zoom attributes
+	map = new google.maps.Map(document.getElementById('map'), {
+	  center: {lat: 39.207, lng: -76.861},
+	  zoom: 11
+	});
+	// calls functions for creating and setting markers
+	setMarkers();
+}
 
-		</container>
-		<script src="lib/knockout-3.4.2.js"></script>
-		<script src="js/script.js"></script>
-		<script async defer 
-			src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap">
-		</script>
-	</body>
-</html>
+function googleMapsAPIError() {
+	alert("Please try again. Your map did not load");
+}
+
+function setMarkers() {
+	var largeInfowindow = new google.maps.InfoWindow();
+	var bounds = new google.maps.LatLngBounds();
+	markers = [];
+
+	for(i=0; i<locations.length; i++) {
+		// gets position and name for each location from locations[]
+		var position = locations[i].position;
+		var description = '<b>' + locations[i].name + '</b><br>' + locations[i].streetAddress;
+		description = description + '</br>'+ locations[i].cityAndZip;
+		var image = {
+			url: 'http://graphichive.net/uploaded/1291812963.jpg',
+			size: new google.maps.Size(40, 40),
+			origin: new google.maps.Point(265, 125),
+			anchor: new google.maps.Point(20, 10)
+		};
+		// creates a marker for each location
+		var marker = new google.maps.Marker({
+			position: position,
+			map: map,
+			description: description,
+			icon: image,
+			animation: google.maps.Animation.DROP,
+			id: i
+		});
+	// adds newly created marker to markers[]
+	markers.push(marker);
+
+	// extends bounds of map for all markers
+	bounds.extend(marker.position);
+	// creates and attaches onclick event to open an infowindow for each marker
+	marker.addListener('click', function() {
+		populateInfoWindow(this, largeInfowindow);
+		});
+	}
+	// ensures that all markers fit within bounds of map
+	map.fitBounds(bounds);
+}
+
+function selectLocations(index) {
+	// extends bounds of map for chosen marker and shows marker
+	var bounds = new google.maps.LatLngBounds();
+	// sets map attribute of all markers to null
+	// keeps markers from showing on map 
+	for(i=0; i<markers.length; i++) {
+		markers[i].setMap(null);			
+		bounds.extend(markers[i].position);
+	}
+	// sets map attribute of chosen marker to map
+	// makes chosen marker visible on map
+	markers[index].setMap(map);
+	// ensures that all marker fits within bounds of map
+	map.fitBounds(bounds);
+}
+
+
+function populateInfoWindow(marker, infowindow) {
+	// checks if infowindow is already open on current marker
+	if(infowindow.marker != marker) {
+		infowindow.marker =  marker;
+		// sets content of infowindow to description of chosen marker
+		infowindow.setContent('<div>' + marker.description + '</div>');
+		infowindow.open(map, marker);
+		// clears marker when infowindow is closed
+		infowindow.addListener('closeclick', function() {
+			infowindow.setMarker = null;
+		});
+	}
+}
+
+var viewModel = function() {
+	var self = this;
+
+	self.locationList = ko.observableArray([]);
+
+	locations.forEach(function(location) {
+		self.locationList.push(new Location(location));
+	});
+
+	self.currentLocation = ko.observable();
+
+	// sets current location to clicked location
+	self.setLocation = function(clickedLocation) {
+		self.currentLocation(clickedLocation);
+		var largeInfowindow = new google.maps.InfoWindow();
+		populateInfoWindow(markers[clickedLocation.id()], largeInfowindow);
+		selectLocations(clickedLocation.id());
+	};
+
+	self.search = ko.observable("");
+	var searchTerm = self.search();
+	console.log(this.search());
+	console.log(searchTerm);
+};
+
+// apply ko data-bindings to viewModel() through vm variable
+var vm = new viewModel();
+ko.applyBindings(vm);
+
