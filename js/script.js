@@ -1,8 +1,9 @@
 // MODEL
 
 var map;
-var markers = [];
-var popupinfo = [];
+var markers;
+var infoWindows;
+var prevInfoWindow;
 
 // list of locations that will be visible on map as points
 // each location in list will be shown as a marker
@@ -58,9 +59,8 @@ var Location = function(data) {
 	self.position = ko.observable(data.position);
 	self.imgUrl = ko.observable(data.imgUrl);
 	self.id = ko.observable(data.id);
+	self.status = 1;
 }
-
-// VIEW MODEL
 
 function initMap() {
 	// creates a new map with given center and zoom attributes
@@ -69,16 +69,17 @@ function initMap() {
 	  zoom: 11
 	});
 	// calls functions for creating and setting markers
-	setMarkers();
-}
+	createMarkers();
+	createInfoWindows();
+};
 
 function googleMapsAPIError() {
 	alert("Please try again. Your map did not load");
-}
+};
 
-function setMarkers() {
-	var largeInfowindow = new google.maps.InfoWindow();
+function createMarkers() {
 	var bounds = new google.maps.LatLngBounds();
+	var infoWindow = new google.maps.InfoWindow();
 	markers = [];
 
 	for(i=0; i<locations.length; i++) {
@@ -101,77 +102,120 @@ function setMarkers() {
 			animation: google.maps.Animation.DROP,
 			id: i
 		});
-	// adds newly created marker to markers[]
-	markers.push(marker);
+		// extends bounds of map for all markers
+		bounds.extend(marker.position);
 
-	// extends bounds of map for all markers
-	bounds.extend(marker.position);
-	// creates and attaches onclick event to open an infowindow for each marker
-	marker.addListener('click', function() {
-		populateInfoWindow(this, largeInfowindow);
+
+		marker.addListener('click', function() {
+		 	populateInfoWindow(this, infoWindow);
+		 	bounceMarker(this);
 		});
-	}
-	// ensures that all markers fit within bounds of map
-	map.fitBounds(bounds);
-}
 
-function selectLocations(index) {
-	// extends bounds of map for chosen marker and shows marker
-	var bounds = new google.maps.LatLngBounds();
-	// sets map attribute of all markers to null
-	// keeps markers from showing on map 
+		// adds newly created marker to markers[]
+		markers.push(marker);
+	}
+};
+
+// creates infoWindows for each of the markers for all locations
+function createInfoWindows() {
+
+	infoWindows = [];
+
 	for(i=0; i<markers.length; i++) {
-		markers[i].setMap(null);			
-		bounds.extend(markers[i].position);
-	}
-	// sets map attribute of chosen marker to map
-	// makes chosen marker visible on map
-	markers[index].setMap(map);
-	// ensures that all marker fits within bounds of map
-	map.fitBounds(bounds);
-}
-
-
-function populateInfoWindow(marker, infowindow) {
-	// checks if infowindow is already open on current marker
-	if(infowindow.marker != marker) {
-		infowindow.marker =  marker;
+		var infoWindow = new google.maps.InfoWindow();
 		// sets content of infowindow to description of chosen marker
-		infowindow.setContent('<div>' + marker.description + '</div>');
-		infowindow.open(map, marker);
-		// clears marker when infowindow is closed
-		infowindow.addListener('closeclick', function() {
-			infowindow.setMarker = null;
+		infoWindow.setContent('<div>' + markers[i].description + '</div>');
+		// creates and attaches onclick event to open an infowindow for each marker
+			markers[i].addListener('click', function() {
+			populateInfoWindow(this, infoWindow);
 		});
+		// add newly created infoWindow to infoWindows
+		infoWindows.push(infoWindow);
 	}
-}
+};
+
+// populates the contents of a clicked infoWindow
+function populateInfoWindow(marker, infoWindow) {
+//	if(infoWindow.marker != marker) {
+		infoWindow.marker = marker;
+		infoWindow.setContent('<div>' + marker.description + '</div>');
+		infoWindow.open(map, marker);
+		// clears marker when infowindow is closed
+		infoWindow.addListener('closeclick', function() {
+			infoWindow.setMarker = null;
+		});		
+//	}
+
+	// checks if a previous infowindow was opened
+	// checks if previous window is not same as infowindow
+	if(prevInfoWindow && prevInfoWindow != infoWindow) {
+		prevInfoWindow.close();
+	}
+
+	// saves value of current infowindow
+	prevInfoWindow = infoWindow;
+};
+
+// makes the marker of the selected location bounce
+function bounceMarker(marker) {
+	// remove animation from all markers
+	for(i=0; i<markers.length; i++) {
+		if(markers[i].getAnimation() !== null) {
+			markers[i].setAnimation(null);
+		}		
+	}
+	// add animation to selected marker
+	marker.setAnimation(google.maps.Animation.BOUNCE);
+	// stop animation after 1500 ms i.e. 2 bounces
+	setTimeout(function() {marker.setAnimation(null);}, 1500);
+};
 
 var viewModel = function() {
 	var self = this;
 
 	self.locationList = ko.observableArray([]);
+	self.markerList = ko.observableArray(markers);
+	self.infoWindowList = ko.observableArray(infoWindows);
+
+	self.currentLocation = ko.observable();
+	self.search = ko.observable('');
 
 	locations.forEach(function(location) {
 		self.locationList.push(new Location(location));
 	});
 
-	self.currentLocation = ko.observable();
-
 	// sets current location to clicked location
+	// opens infowindow and makes marker bounce for selected location 
 	self.setLocation = function(clickedLocation) {
 		self.currentLocation(clickedLocation);
-		var largeInfowindow = new google.maps.InfoWindow();
-		populateInfoWindow(markers[clickedLocation.id()], largeInfowindow);
-		selectLocations(clickedLocation.id());
+		bounceMarker(markers[clickedLocation.id()]);
+		populateInfoWindow(markers[clickedLocation.id()], infoWindows[clickedLocation.id()]);
 	};
 
-	self.search = ko.observable("");
-	var searchTerm = self.search();
-	console.log(this.search());
-	console.log(searchTerm);
+	self.matches = ko.computed(function() {
+		var search = self.search().toLowerCase();
+		if(search) {
+//			console.log('search')
+//			console.log(self.search());
+			return ko.utils.arrayFilter(self.locationList(), function(location) {
+				var name = location.name().toLowerCase();
+//				console.log('name.indexOf(search)');
+//				console.log(name.indexOf(search));
+				if(name.indexOf(search) != -1) {
+					console.log('name');
+					console.log(name);
+					bounceMarker(markers[location.id()]);
+					populateInfoWindow(markers[location.id()], infoWindows[location.id()]);
+					return location;
+				}
+			});
+		}
+		else {
+			return self.locationList();
+		}
+	}, self);
+
 };
 
-// apply ko data-bindings to viewModel() through vm variable
 var vm = new viewModel();
 ko.applyBindings(vm);
-
