@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
 		<title>Study Sites</title>
 	</head>
@@ -18,7 +18,7 @@
 						Study Sites
 					</h3>
 					<input type="input" name="search" data-bind="textInput: search"></input>
-					
+
 					<ul data-bind="foreach: locationList" id="location-list">
 						<li data-bind= "text: name, click: $parent.setLocation"></li>
 					</ul>
@@ -29,13 +29,10 @@
 						<div data-bind="text: streetAddress" id="location-address"></div>
 						<div data-bind="text: cityAndZip" id="location-address"></div>
 					</div>
-					<br><br><br><br><br>
-					<br><br><br><br><br><br>
 				</div>
 				<div class="map" id="map">
 				</div>
 			</section>
-
 		</container>
 		<script src="lib/knockout-3.4.2.js"></script>
 		<script src="js/script.js"></script>
