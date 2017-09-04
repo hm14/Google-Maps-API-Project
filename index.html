@@ -5,19 +5,12 @@
 	<title>Study Sites</title>
 </head>
 <body>
-<div class="top-bar" id="top-bar">
-	<div>
+	
+<div class="container">
+    <div class="menubar">
+    <div>
 		<input type="input" name="search" data-bind="textInput: search" id="filter-box" placeholder="Search here..." />
 	</div>
-</div>
-<nav role="navigation">
-  <div id="menuToggle">
-    <input type="checkbox" />
-    <span></span>
-    <span></span>
-    <span></span>
-
-    <ul id="menu">
 		<ul data-bind="foreach: locationList" id="location-list">
 			<li data-bind= "text: name, click: $parent.setLocation"></li>
 		</ul>
@@ -29,16 +22,15 @@
 			<div data-bind="text: streetAddress" id="location-address"></div>
 			<div data-bind="text: cityAndZip" id="location-address"></div>
 		</div>
-	</ul>
-  </div>
-</nav>
+	</div>
 
 <div class="map" id="map"></div>
-
+</div>
+	
 <script src="lib/knockout-3.4.2.js"></script>
 <script src="js/script.js"></script>
 <script async defer 
-	src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap" onerror="googleMapsAPIError()">
+	src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=init" onerror="googleMapsAPIError()">
 </script>
 
 </body>
