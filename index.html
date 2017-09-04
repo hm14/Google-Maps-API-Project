@@ -1,43 +1,45 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/hamburger.css">
+	<title>Study Sites</title>
+</head>
+<body>
+<div class="top-bar" id="top-bar">
+	<div>
+		<input type="input" name="search" data-bind="textInput: search" id="filter-box" placeholder="Search here..." />
+	</div>
+</div>
+<nav role="navigation">
+  <div id="menuToggle">
+    <input type="checkbox" />
+    <span></span>
+    <span></span>
+    <span></span>
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-		<title>Study Sites</title>
-	</head>
+    <ul id="menu">
+		<ul data-bind="foreach: locationList" id="location-list">
+			<li data-bind= "text: name, click: $parent.setLocation"></li>
+		</ul>
+		<div data-bind="with: currentLocation()" id="location">
+			<br>
+			<div data-bind="text: name" id="location-name"></div>
+			<br>
+			<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
+			<div data-bind="text: streetAddress" id="location-address"></div>
+			<div data-bind="text: cityAndZip" id="location-address"></div>
+		</div>
+	</ul>
+  </div>
+</nav>
 
-	<body>
-		<container class="container">
-			<section class="content">
-				<div class="menu">
-					<h3 id="title">
-						Study Sites
-					</h3>
-					<input type="input" name="search" data-bind="textInput: search"></input>
+<div class="map" id="map"></div>
 
-					<ul data-bind="foreach: locationList" id="location-list">
-						<li data-bind= "text: name, click: $parent.setLocation"></li>
-					</ul>
+<script src="lib/knockout-3.4.2.js"></script>
+<script src="js/script.js"></script>
+<script async defer 
+	src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap" onerror="googleMapsAPIError()">
+</script>
 
-					<div data-bind="with: currentLocation()" id="location">
-						<div data-bind="text: name" id="location-name"></div>
-						<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
-						<div data-bind="text: streetAddress" id="location-address"></div>
-						<div data-bind="text: cityAndZip" id="location-address"></div>
-					</div>
-				</div>
-				<div class="map" id="map">
-				</div>
-			</section>
-		</container>
-		<script src="lib/knockout-3.4.2.js"></script>
-		<script src="js/script.js"></script>
-		<script async defer 
-			src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=initMap" onerror="googleMapsAPIError()">
-		</script>
-	</body>
+</body>
 </html>
