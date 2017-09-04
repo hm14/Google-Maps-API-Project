@@ -52,25 +52,41 @@ var locations = [
 ];
 
 var Location = function(data) {
-	var self = this;
-	self.name = ko.observable(data.name);
-	self.streetAddress = ko.observable(data.streetAddress)
-	self.cityAndZip = ko.observable(data.cityAndZip);
-	self.position = ko.observable(data.position);
-	self.imgUrl = ko.observable(data.imgUrl);
-	self.id = ko.observable(data.id);
-	self.status = 1;
+	this.name = ko.observable(data.name);
+	this.streetAddress = ko.observable(data.streetAddress)
+	this.cityAndZip = ko.observable(data.cityAndZip);
+	this.position = ko.observable(data.position);
+	this.imgUrl = ko.observable(data.imgUrl);
+	this.id = ko.observable(data.id);
+	this.status = 1;
+	this.visible = ko.observable(true);
+
+	this.marker = new google.maps.Marker({
+		postion: data.position,
+		map: map,
+		animation: google.maps.Animation.DROP
+	})
+
+	this.showMarker = ko.computed(function() {
+		if(this.visible() === true) {
+			this.marker.setMap(map);
+		}
+		else {
+			this.marker.setMap(null);
+		}
+		return true;
+	}, this);
+
 }
+
 
 function initMap() {
 	// creates a new map with given center and zoom attributes
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 39.207, lng: -76.861},
-	  zoom: 11
+	  zoom: 10
 	});
-	// calls functions for creating and setting markers
-	createMarkers();
-	createInfoWindows();
+	return map;
 };
 
 function googleMapsAPIError() {
@@ -98,7 +114,7 @@ function createMarkers() {
 			position: position,
 			map: map,
 			description: description,
-			icon: image,
+			// icon: image,
 			animation: google.maps.Animation.DROP,
 			id: i
 		});
@@ -136,15 +152,13 @@ function createInfoWindows() {
 
 // populates the contents of a clicked infoWindow
 function populateInfoWindow(marker, infoWindow) {
-//	if(infoWindow.marker != marker) {
-		infoWindow.marker = marker;
-		infoWindow.setContent('<div>' + marker.description + '</div>');
-		infoWindow.open(map, marker);
-		// clears marker when infowindow is closed
-		infoWindow.addListener('closeclick', function() {
-			infoWindow.setMarker = null;
-		});		
-//	}
+	infoWindow.marker = marker;
+	infoWindow.setContent('<div>' + marker.description + '</div>');
+	infoWindow.open(map, marker);
+	// clears marker when infowindow is closed
+	infoWindow.addListener('closeclick', function() {
+		infoWindow.setMarker = null;
+	});		
 
 	// checks if a previous infowindow was opened
 	// checks if previous window is not same as infowindow
@@ -170,15 +184,33 @@ function bounceMarker(marker) {
 	setTimeout(function() {marker.setAnimation(null);}, 1500);
 };
 
+// function hideMarkers() {
+// 	// remove markers from map
+// 	for(i=0; i<markers.length; i++) {
+// 		this.markers[i].setMap = null;
+// 	}
+// };
+
+// function showMarker(i) {
+// 	console.log(i);
+// 	markers[i].setMap = map;
+// };
+
 var viewModel = function() {
+	map = initMap();
+
+	// calls functions for creating and setting markers
+	createMarkers();
+	createInfoWindows();
+	
 	var self = this;
 
-	self.locationList = ko.observableArray([]);
-	self.markerList = ko.observableArray(markers);
-	self.infoWindowList = ko.observableArray(infoWindows);
+	this.locationList = ko.observableArray([]);
+	this.markerList = ko.observableArray([]);
+	this.infoWindowList = ko.observableArray([]);
 
-	self.currentLocation = ko.observable();
-	self.search = ko.observable('');
+	this.currentLocation = ko.observable();
+	this.search = ko.observable('');
 
 	locations.forEach(function(location) {
 		self.locationList.push(new Location(location));
@@ -186,36 +218,39 @@ var viewModel = function() {
 
 	// sets current location to clicked location
 	// opens infowindow and makes marker bounce for selected location 
-	self.setLocation = function(clickedLocation) {
+	this.setLocation = function(clickedLocation) {
 		self.currentLocation(clickedLocation);
 		bounceMarker(markers[clickedLocation.id()]);
 		populateInfoWindow(markers[clickedLocation.id()], infoWindows[clickedLocation.id()]);
 	};
 
-	self.matches = ko.computed(function() {
-		var search = self.search().toLowerCase();
+	this.locationList = ko.computed(function() {
+	
+	//console.log(self.locationList);
+		search = self.search().toLowerCase();
+		console.log(search);
 		if(search) {
-//			console.log('search')
-//			console.log(self.search());
-			return ko.utils.arrayFilter(self.locationList(), function(location) {
-				var name = location.name().toLowerCase();
-//				console.log('name.indexOf(search)');
-//				console.log(name.indexOf(search));
-				if(name.indexOf(search) != -1) {
-					console.log('name');
-					console.log(name);
-					bounceMarker(markers[location.id()]);
-					populateInfoWindow(markers[location.id()], infoWindows[location.id()]);
-					return location;
-				}
+			return ko.utils.arrayFilter(self.locationList(), function(locationItem) {
+				var name = locationItem.name().toLowerCase();
+				var result = (name.search(search) >= 0);
+					locationItem.visible(result);
+				bounceMarker(markers[locationItem.id()]);
+				populateInfoWindow(markers[locationItem.id()], infoWindows[locationItem.id()]);
+				locationItem.showMarker();
+				return result;
 			});
 		}
 		else {
+			self.locationList().forEach(function(locationItem){
+				locationItem.visible(true);
+			});
 			return self.locationList();
 		}
 	}, self);
-
 };
 
-var vm = new viewModel();
-ko.applyBindings(vm);
+function init() {
+	ko.applyBindings(new viewModel());
+}
+// var vm = new viewModel();
+// ko.applyBindings(vm);
