@@ -50,6 +50,8 @@ var locations = [
 	}
 ];
 
+// this is the object called from ViewModel
+// to push locations from locations[] to locationList[]
 var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.streetAddress = ko.observable(data.streetAddress)
@@ -73,7 +75,7 @@ var Location = function(data) {
 	}, this);
 }
 
-
+// initializes Google Map
 function initMap() {
 	var bounds = new google.maps.LatLngBounds();
 
@@ -87,17 +89,21 @@ function initMap() {
 	bounds.extend(marker.position);
 };
 
+// informs user if there an error in loading map
 function googleMapsAPIError() {
 	alert("Please try again. Your map did not load");
 };
 
+// creates a marker for given location
 function createMarker(location) {
 	var bounds = new google.maps.LatLngBounds();
 	var infoWindow = new google.maps.InfoWindow();
 
-	// gets position and name for each location from locations[]
+	// creates description of marker
+	// description is used later to set content of marker's infowindow
 	var description = '<b>' + location.name + '</b><br>' + location.streetAddress;
 	description = description + '</br>'+ location.cityAndZip;
+	// assigns attributes to image that is to be used as icon
 	var image = {
 		url: 'http://graphichive.net/uploaded/1291812963.jpg',
 		size: new google.maps.Size(40, 40),
@@ -109,11 +115,12 @@ function createMarker(location) {
 		position: location.position,
 		map: map,
 		description: description,
-		// icon: image,
+		// customizes icon as assigned image
+		icon: image,
+		// assigns drop animation to marker
 		animation: google.maps.Animation.DROP,
-		// id: i
 	});
-	// extends bounds of map for all markers
+	// extends bounds of map for marker
 	bounds.extend(marker.position);
 
 	// creates and attaches onclick event
@@ -150,13 +157,17 @@ function populateInfoWindow(marker, infoWindow) {
 
 // makes the marker of the selected location bounce
 function bounceMarker(marker) {
-	// add animation to selected marker
+	// adds animation to selected marker
 	marker.setAnimation(google.maps.Animation.BOUNCE);
-	// stop animation after 1500 ms i.e. 2 bounces
+	// stops animation after 1500 ms i.e. 2 bounces
 	setTimeout(function() {marker.setAnimation(null);}, 1500);
 };
 
+// VIEW MODEL
+
 var ViewModel = function() {
+	// initializes a Google Map and saves as map variable
+	// important: this is the map shown in #map div in index.html
 	map = initMap();
 
 	var self = this;
@@ -166,9 +177,11 @@ var ViewModel = function() {
 	this.locationList = ko.observableArray([]);
 
 	this.currentLocation = ko.observable();
+	// important: the data-binding in index.html is for search
 	this.search = ko.observable('');
 
 	locations.forEach(function(location) {
+		// creates a Location instance for each item in locations array
 		self.locationList.push(new Location(location));
 	});
 
@@ -176,25 +189,39 @@ var ViewModel = function() {
 	// opens infowindow and makes marker bounce for selected location 
 	this.setLocation = function(clickedLocation) {
 		self.currentLocation(clickedLocation);
+		// animates clickedLocation's marker
 		bounceMarker(clickedLocation.marker);
+		// sets content of infoWindow of clickedLocation's marker
 		populateInfoWindow(clickedLocation.marker, infoWindow);
 	};
 
+	// filters through locationList to find locations that match user search
+	// important: the data-binding in index.html is for filteredLocations
 	this.filteredLocations = ko.computed(function() {	
 		search = self.search().toLowerCase();
+		// handles the case when user enters input in search box
 		if(search) {
+			// adds locationItem to filteredLocations if result is true
 			return ko.utils.arrayFilter(self.locationList(), function(locationItem) {
+				// take care of case sensitivity of user entered search
 				var name = locationItem.name().toLowerCase();
 				var result = (name.search(search) >= 0);
+					// sets matched location to visible 
+					// visibility applies to both list item and marker
 					locationItem.visible(result);
 					locationItem.showMarker();
+					// animates location markers matching user search
 					bounceMarker(locationItem.marker);
+				// returns true if match found
 				return result;
 			});
 		}
+		// returns original locationList if search box is empty
+		// handles the case when user enters nothing or enters and deletes input
 		else {
 			self.locationList().forEach(function(locationItem) {
-				locationItem.visible(true);
+			// sets all locations as visible
+			locationItem.visible(true);
 			});
 			return self.locationList();
 		}
@@ -203,6 +230,8 @@ var ViewModel = function() {
 
 var vm;
 
+// this function is called from index.html
+// applies ko bindings to ViewModel at initialize
 function init() {
 	vm = new ViewModel();
 	ko.applyBindings(vm);
