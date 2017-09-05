@@ -116,37 +116,22 @@ function createMarker(location) {
 	// extends bounds of map for all markers
 	bounds.extend(marker.position);
 
-	// marker.addListener('click', function() {
-	//  	populateInfoWindow(this, infoWindow);
-	//  	bounceMarker(this);
-	// });
+	// creates and attaches onclick event
+	// to open an infowindow and bounce for each marker
+	marker.addListener('click', function() {
+	 	populateInfoWindow(this, infoWindow);
+	 	bounceMarker(this);
+	});
 
 	return marker;
-};
-
-// creates infoWindows for each of the markers for all locations
-function createInfoWindows() {
-
-	infoWindows = [];
-
-	for(i=0; i<locations.length; i++) {
-		var infoWindow = new google.maps.InfoWindow();
-		// sets content of infowindow to description of chosen marker
-//		infoWindow.setContent('<div>' + markers[i].description + '</div>');
-		infoWindow.setContent(marker.description);		
-		// creates and attaches onclick event to open an infowindow for each marker
-			markers[i].addListener('click', function() {
-			populateInfoWindow(this, infoWindow);
-		});
-		// add newly created infoWindow to infoWindows
-		infoWindows.push(infoWindow);
-	}
 };
 
 // populates the contents of a clicked infoWindow
 function populateInfoWindow(marker, infoWindow) {
 	infoWindow.marker = marker;
+	// sets content of infowindow to description of chosen marker
 	infoWindow.setContent('<div>' + marker.description + '</div>');
+	// opens infowindow of marker on map
 	infoWindow.open(map, marker);
 	// clears marker when infowindow is closed
 	infoWindow.addListener('closeclick', function() {
@@ -174,22 +159,17 @@ function bounceMarker(marker) {
 var ViewModel = function() {
 	map = initMap();
 
-	// calls functions for creating and setting markers
-	//createInfoWindows();
-	
 	var self = this;
 
+	var infoWindow = new google.maps.InfoWindow();
+
 	this.locationList = ko.observableArray([]);
-	//this.markerList = ko.observableArray([]);
-	//this.infoWindowList = ko.observableArray([]);
 
 	this.currentLocation = ko.observable();
 	this.search = ko.observable('');
 
 	locations.forEach(function(location) {
-		var temp = new Location(location);
-		//console.log(temp.marker.description);
-		self.locationList.push(temp);
+		self.locationList.push(new Location(location));
 	});
 
 	// sets current location to clicked location
@@ -197,6 +177,7 @@ var ViewModel = function() {
 	this.setLocation = function(clickedLocation) {
 		self.currentLocation(clickedLocation);
 		bounceMarker(clickedLocation.marker);
+		populateInfoWindow(clickedLocation.marker, infoWindow);
 	};
 
 	this.filteredLocations = ko.computed(function() {	
@@ -204,7 +185,6 @@ var ViewModel = function() {
 		if(search) {
 			return ko.utils.arrayFilter(self.locationList(), function(locationItem) {
 				var name = locationItem.name().toLowerCase();
-				// console.log(name.search(search));
 				var result = (name.search(search) >= 0);
 					locationItem.visible(result);
 					locationItem.showMarker();
