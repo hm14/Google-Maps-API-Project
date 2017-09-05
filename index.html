@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>Study Sites</title>
-</head>
-<body>
-	
-<div class="container">
-    <div class="menubar">
-    <div>
-		<input type="input" name="search" data-bind="textInput: search" id="filter-box" placeholder="Search here..." />
-	</div>
-		<ul data-bind="foreach: locationList" id="location-list">
-			<li data-bind= "text: name, click: $parent.setLocation"></li>
-		</ul>
-		<div data-bind="with: currentLocation()" id="location">
-			<br>
-			<div data-bind="text: name" id="location-name"></div>
-			<br>
-			<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
-			<div data-bind="text: streetAddress" id="location-address"></div>
-			<div data-bind="text: cityAndZip" id="location-address"></div>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Study Sites</title>
+	</head>
+	<body>
+		<div class="container">
+		    <div class="menubar">
+				<div>
+					<input type="input" name="search" data-bind="textInput: search" id="filter-box" placeholder="Search here..." />
+				</div>
+				<ul data-bind="foreach: filteredLocations" id="location-list">
+					<li data-bind= "text: name, click: $parent.setLocation"></li>
+				</ul>
+				<div data-bind="with: currentLocation()" id="location">
+					<br>
+					<div data-bind="text: name" id="location-name"></div>
+					<br>
+					<img src="" alt="Library building" data-bind="attr: {src: imgUrl}" id="location-image">
+					<div data-bind="text: streetAddress" id="location-address"></div>
+					<div data-bind="text: cityAndZip" id="location-address"></div>
+				</div>
+			</div>
+
+			<div class="map" id="map">
+			</div>
 		</div>
-	</div>
 
-<div class="map" id="map"></div>
-</div>
-	
-<script src="lib/knockout-3.4.2.js"></script>
-<script src="js/script.js"></script>
-<script async defer 
-	src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=init" onerror="googleMapsAPIError()">
-</script>
+	<script src="lib/knockout-3.4.2.js"></script>
+	<script src="js/script.js"></script>
+	<script async defer 
+		src="https:maps.googleapis.com/maps/api/js?key=AIzaSyC4lwXmrA4ZGdXqhBAz16tHtsqKqxfrbpE&v=3&callback=init" onerror="googleMapsAPIError()">
+	</script>
 
-</body>
+	</body>
 </html>
