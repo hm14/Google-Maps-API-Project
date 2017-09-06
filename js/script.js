@@ -61,7 +61,6 @@ var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.streetAddress = ko.observable(data.streetAddress);
 	this.cityAndZip = ko.observable(data.cityAndZip);
-	//this.position = ko.observable(data.position);
 	this.imgUrl = ko.observable(data.imgUrl);
 	this.visible = ko.observable(true);
 
@@ -192,13 +191,9 @@ function populateInfoWindow(marker, infoWindow) {
 	})
 	// this gets executed when the above request is not successful
 	.fail(function(error) {
-		fourSquareAPIError();
+		// informs user if there an error in loading foursquare data
+		alert("Please try again. Your foursquare data did not load");
 	});
-}
-
-// informs user if there an error in loading foursquare data
-function fourSquareAPIError() {
-	alert("Please try again. Your foursquare data did not load");
 }
 
 // makes the marker of the selected location bounce
