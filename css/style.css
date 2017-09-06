@@ -13,18 +13,12 @@ body
   font-family: "Avenir Next", "Avenir", sans-serif;
 }
 
-.top-bar {
-    width: 100%;
-    display: flex;
+.container {
+	width: 100%;
+	display: flex;
     /* makes columns stand next to one another 
     and not stack up one on top of another */
-    flex-wrap: wrap;
-}
-
-.container {
-	/*width: 100%;*/
-	display: flex;
-	flex-wrap: wrap;
+   	flex-wrap: wrap;
 }
 
 .map {
@@ -34,6 +28,16 @@ body
 
 .menubar {
 	width: 25%;
+	display: flex;
+   	flex-wrap: wrap;
+}
+
+.menubartop {
+	width: 100%;
+}
+
+.menubarbottom {
+	width: 100%;
 }
 
 #filter-box {
@@ -43,7 +47,7 @@ body
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 5px;
-    width: 170px;
+    width: 150px;
     height: 30px;
     text-align: center;
 }
@@ -58,48 +62,52 @@ body
 }
 
 #location-image {
-    height: 130px;
+    height: 90px;
     border: 1px;
     border-radius: 3px;
 }
 
 /*MEDIA QUERIES*/
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 100px) {
 	.map {
-		width: 70%;
+		width: 100%;
 	}
 	.menubar {
-		width: 30%;
+		width: 100%;
+		display: flex;
+   		flex-wrap: wrap;
 	}
-	#filter-box {
-		width: 100px;
-	}
-	#location-image {
-		height: 72px;
+	.menubartop, .menubarbottom {
+		width: 100%;
 	}
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 300px) {
 	.map {
-		width: 70%;
+		width: 100%;
 	}
 	.menubar {
-		width: 30%;
+		width: 100%;
+		display: flex;
+   		flex-wrap: wrap;
 	}
-	#filter-box {
-		width: 130px;
-	}
-		#location-image {
-		height: 90px;
+	.menubartop, .menubarbottom {
+		width: 50%;
 	}
 }
 
 @media screen and (min-width: 640px) {
-	#filter-box {
-		width: 150px;
+	.map {
+		width: 75%;
 	}
-		#location-image {
+	.menubar {
+		width: 25%;
+	}
+	.menubartop, .menubarbottom {
+		width: 100%;
+	}
+	#location-image {
 		height: 100px;
 	}
 }
@@ -129,7 +137,7 @@ body
 	.menubar {
 		width: 20%;
 	}
-	#filter-box {
-		width: 200px;
+	#location-image {
+		height: 140px;
 	}
 }
