@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
 		<title>Study Sites</title>
 	</head>
 	<body>
 		<div class="container">
 		    <div class="menubar">
-				<div>
+				<div class="menubartop">
 					<input type="input" name="search" data-bind="textInput: search" id="filter-box" placeholder="Search here..." />
+					<ul data-bind="foreach: filteredLocations" id="location-list">
+						<li data-bind= "text: name, click: $parent.setLocation"></li>
+					</ul>
 				</div>
-				<ul data-bind="foreach: filteredLocations" id="location-list">
-					<li data-bind= "text: name, click: $parent.setLocation"></li>
-				</ul>
-				<div data-bind="with: currentLocation()" id="location">
+				<div class="menubarbottom" data-bind="with: currentLocation()" id="location">
 					<br>
 					<div data-bind="text: name" id="location-name"></div>
 					<br>
