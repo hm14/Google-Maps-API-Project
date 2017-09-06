@@ -14,7 +14,6 @@ var locations = [
 		cityAndZip: 'Columbia, MD 21044',
 		position: {lat: 39.221, lng: -76.860},
 		imgUrl: 'http://www.hoodpad.com/img/site/b1a93c4e735.jpg',
-		id: 0
 	},
 	{
 		name: 'Miller Library',
@@ -22,7 +21,6 @@ var locations = [
 		cityAndZip: 'Ellicott City, MD 21042',
 		position: {lat: 39.272, lng: -76.841},
 		imgUrl: 'http://www.columbiaengineering.com/Lists/Photos/Libraries/Miller%20Branch%20Library.jpg',
-		id: 1
 	},
 	{
 		name: 'Elkridge Library',
@@ -30,7 +28,6 @@ var locations = [
 		cityAndZip: 'Elkridge, MD 21075',
 		position: {lat: 39.211, lng: -76.735},
 		imgUrl: 'http://www.trbimg.com/img-535f9d2d/turbine/ph-elkridge-library',
-		id: 2
 	},
 	{
 		name: 'Glenwood Library',
@@ -38,7 +35,6 @@ var locations = [
 		cityAndZip: 'Cooksville, MD 21723',
 		position: {lat: 39.306, lng: -77.024},
 		imgUrl: 'https://s3.amazonaws.com/fun-dn.com/upload/620059_78805a-9c36edfc_large.jpg',
-		id: 3
 	},
 	{
 		name: 'Savage Library',
@@ -46,7 +42,6 @@ var locations = [
 		cityAndZip: 'Laurel, MD 20723',
 		position: {lat: 39.132, lng: -76.838},
 		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
-		id: 4
 	}
 ];
 
@@ -58,8 +53,6 @@ var Location = function(data) {
 	this.cityAndZip = ko.observable(data.cityAndZip);
 	this.position = ko.observable(data.position);
 	this.imgUrl = ko.observable(data.imgUrl);
-	this.id = ko.observable(data.id);
-	this.status = 1;
 	this.visible = ko.observable(true);
 
 	this.marker = createMarker(data);
@@ -116,7 +109,7 @@ function createMarker(location) {
 		map: map,
 		description: description,
 		// customizes icon as assigned image
-		icon: image,
+		//icon: image,
 		// assigns drop animation to marker
 		animation: google.maps.Animation.DROP,
 	});
