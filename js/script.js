@@ -59,7 +59,7 @@ var locations = [
 // to push locations from locations[] to locationList[]
 var Location = function(data) {
 	this.name = ko.observable(data.name);
-	this.streetAddress = ko.observable(data.streetAddress)
+	this.streetAddress = ko.observable(data.streetAddress);
 	this.cityAndZip = ko.observable(data.cityAndZip);
 	//this.position = ko.observable(data.position);
 	this.imgUrl = ko.observable(data.imgUrl);
@@ -76,26 +76,22 @@ var Location = function(data) {
 		}
 		return true;
 	}, this);
-}
+};
 
 // initializes Google Map
 function initMap() {
-	var bounds = new google.maps.LatLngBounds();
-
 	// creates a new map with given center and zoom attributes
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 39.207, lng: -76.861},
 	  zoom: 10
 	});
 	return map;
-
-	bounds.extend(marker.position);
-};
+}
 
 // informs user if there an error in loading google map
 function googleMapsAPIError() {
 	alert("Please try again. Your Google map did not load");
-};
+}
 
 // creates a marker for given location
 function createMarker(location) {
@@ -137,7 +133,7 @@ function createMarker(location) {
 	});
 
 	return marker;
-};
+}
 
 // populates the contents of a clicked infoWindow
 function populateInfoWindow(marker, infoWindow) {
@@ -198,7 +194,7 @@ function populateInfoWindow(marker, infoWindow) {
 	.fail(function(error) {
 		fourSquareAPIError();
 	});
-};
+}
 
 // informs user if there an error in loading foursquare data
 function fourSquareAPIError() {
@@ -211,7 +207,7 @@ function bounceMarker(marker) {
 	marker.setAnimation(google.maps.Animation.BOUNCE);
 	// stops animation after 1500 ms i.e. 2 bounces
 	setTimeout(function() {marker.setAnimation(null);}, 1500);
-};
+}
 
 // VIEW MODEL
 
