@@ -12,35 +12,45 @@ var locations = [
 		name: 'Central Library',
 		streetAddress: '10375 Little Patuxent Pkwy',
 		cityAndZip: 'Columbia, MD 21044',
-		position: {lat: 39.221, lng: -76.860},
+		lat: 39.211,
+		lng: -76.860,
+		id: '582ccb21a8b55d58005fb2ce',
 		imgUrl: 'http://www.hoodpad.com/img/site/b1a93c4e735.jpg',
 	},
 	{
 		name: 'Miller Library',
 		streetAddress: '9421 Frederick Rd',
 		cityAndZip: 'Ellicott City, MD 21042',
-		position: {lat: 39.272, lng: -76.841},
+		lat: 39.272,
+		lng: -76.841,
+		id: '4b461f08f964a520181726e3',
 		imgUrl: 'http://www.columbiaengineering.com/Lists/Photos/Libraries/Miller%20Branch%20Library.jpg',
 	},
 	{
 		name: 'Elkridge Library',
 		streetAddress: '7071 Montgomery Rd',
 		cityAndZip: 'Elkridge, MD 21075',
-		position: {lat: 39.211, lng: -76.735},
+		lat: 39.211,
+		lng: -76.735,
+		id: '4ee2a46ce4b04d23df1429eb',
 		imgUrl: 'http://www.trbimg.com/img-535f9d2d/turbine/ph-elkridge-library',
 	},
 	{
 		name: 'Glenwood Library',
 		streetAddress: '2350 MD-97',
 		cityAndZip: 'Cooksville, MD 21723',
-		position: {lat: 39.306, lng: -77.024},
+		lat: 39.306,
+		lng: -77.024,
+		id: '4b60adf3f964a520b0f329e3',
 		imgUrl: 'https://s3.amazonaws.com/fun-dn.com/upload/620059_78805a-9c36edfc_large.jpg',
 	},
 	{
 		name: 'Savage Library',
 		streetAddress: '9525 Durness Ln',
 		cityAndZip: 'Laurel, MD 20723',
-		position: {lat: 39.132, lng: -76.838},
+		lat: 39.132,
+		lng: -76.838,
+		id: '4b881007f964a520cddc31e3',
 		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
 	}
 ];
@@ -51,7 +61,7 @@ var Location = function(data) {
 	this.name = ko.observable(data.name);
 	this.streetAddress = ko.observable(data.streetAddress)
 	this.cityAndZip = ko.observable(data.cityAndZip);
-	this.position = ko.observable(data.position);
+	//this.position = ko.observable(data.position);
 	this.imgUrl = ko.observable(data.imgUrl);
 	this.visible = ko.observable(true);
 
@@ -82,9 +92,9 @@ function initMap() {
 	bounds.extend(marker.position);
 };
 
-// informs user if there an error in loading map
+// informs user if there an error in loading google map
 function googleMapsAPIError() {
-	alert("Please try again. Your map did not load");
+	alert("Please try again. Your Google map did not load");
 };
 
 // creates a marker for given location
@@ -105,7 +115,10 @@ function createMarker(location) {
 	};
 	// creates a marker for each location
 	var marker = new google.maps.Marker({
-		position: location.position,
+		lat: location.lat,
+		lng: location.lng,
+		position: {lat: location.lat, lng: location.lng},
+		id: location.id,
 		map: map,
 		description: description,
 		// customizes icon as assigned image
@@ -128,25 +141,69 @@ function createMarker(location) {
 
 // populates the contents of a clicked infoWindow
 function populateInfoWindow(marker, infoWindow) {
-	infoWindow.marker = marker;
-	// sets content of infowindow to description of chosen marker
-	infoWindow.setContent('<div>' + marker.description + '</div>');
-	// opens infowindow of marker on map
-	infoWindow.open(map, marker);
-	// clears marker when infowindow is closed
-	infoWindow.addListener('closeclick', function() {
-		infoWindow.setMarker = null;
-	});		
+	var self = this;
 
-	// checks if a previous infowindow was opened
-	// checks if previous window is not same as infowindow
-	if(prevInfoWindow && prevInfoWindow != infoWindow) {
-		prevInfoWindow.close();
-	}
+	var fourSquareUrl = 'https://api.foursquare.com/v2/venues/';
+	// foursquare API client id and secret
+	var fourSquareClientId = '34BOLZENAJP53ZPZDNV4YX1C5G3YDJLZU1MYE4Q5QYYNC3OC';
+	var fourSquareClientSecret = 'GVJWIKTE31VGYYWSOE15XUVVR0AZOGWK1I3N5HLPFTEEMYSO';
 
-	// saves value of current infowindow
-	prevInfoWindow = infoWindow;
+	var fourSquareAPIPoint = fourSquareUrl + marker.id +
+	'?client_id=' + fourSquareClientId + '&client_secret=' + fourSquareClientSecret +
+	'&v=20170808';
+
+	// sends GET request to foursquare API
+	$.ajax({
+		type: 'GET',
+		url: fourSquareAPIPoint,
+		processData: false,
+		
+	})
+	// this gets executed when above request is successful
+	.done(function(data) {
+		var venue = data.response.venue;
+		var likes = venue.likes.count;
+		var rating = venue.rating;
+
+		if(!likes) {
+			likes = 0;
+		}
+		if(!rating) {
+			rating = 0;
+		}
+
+		var locationData = '<br><b>Likes:</b> ' + likes + '<br>';
+		locationData = locationData + ' <b>Rating: </b>' + rating + '/10<br>';
+
+		infoWindow.marker = marker;
+		// sets content of infowindow to description of chosen marker
+		infoWindow.setContent('<div>' + marker.description + '<br>' + locationData + '</div>');
+		// opens infowindow of marker on map
+		infoWindow.open(map, marker);
+		// clears marker when infowindow is closed
+		infoWindow.addListener('closeclick', function() {
+			infoWindow.setMarker = null;
+		});		
+
+		// checks if a previous infowindow was opened
+		// checks if previous window is not same as infowindow
+		if(prevInfoWindow && prevInfoWindow != infoWindow) {
+			prevInfoWindow.close();
+		}
+
+		// saves value of current infowindow
+		prevInfoWindow = infoWindow;
+	})
+	// this gets executed when the above request is not successful
+	.fail(function(error) {
+		fourSquareAPIError();
+	});
 };
+
+// informs user if there an error in loading foursquare data
+function fourSquareAPIError() {
+	alert("Please try again. Your foursquare data did not load");
+}
 
 // makes the marker of the selected location bounce
 function bounceMarker(marker) {
