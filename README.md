@@ -1,4 +1,4 @@
-#Study Sites, a Neighborhood Map Project
+#Study Sites, a Neighborhood Map Project live at https://hm14.github.io/Google-Maps-API-Project/
 
 This is single page application that makes calls to location based service APIs (Google Maps and foursquares) to retrive data and then displays it using text, images and markers on a Google Map. 
 
@@ -11,5 +11,7 @@ No set up is needed. Just open index.html and the app will render itself.
 ##Code Layout
 
 All html is inside index.html
+
 All styling code is in /css/style.css
+
 ALL JavaScript code is in /js/script.js
