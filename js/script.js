@@ -52,7 +52,7 @@ var locations = [
 		lng: -76.838,
 		id: '4b881007f964a520cddc31e3',
 		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
-	}
+	},
 	{
 		name: 'Catonsville Library',
 		streetAddress: '1100 Frederick Rd,',
@@ -61,7 +61,7 @@ var locations = [
 		lng: -76.742,
 		id: '4b9f5d9ff964a5208f1e37e3',
 		imgUrl: 'https://foursquare.com/v/catonsville-library/4b9f5d9ff964a5208f1e37e3?openPhotoId=515cb163e4b0246c71776827',
-	}
+	},
 	{
 		name: 'Olney Library',
 		streetAddress: '3500 Olney Laytonsville Rd,',
