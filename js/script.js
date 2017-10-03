@@ -62,6 +62,15 @@ var locations = [
 		id: '4b9f5d9ff964a5208f1e37e3',
 		imgUrl: 'https://foursquare.com/v/catonsville-library/4b9f5d9ff964a5208f1e37e3?openPhotoId=515cb163e4b0246c71776827',
 	}
+	{
+		name: 'Olney Library',
+		streetAddress: '3500 Olney Laytonsville Rd,',
+		cityAndZip: 'Olney, MD 20832',
+		lat: 39.276,
+		lng: -77.041,
+		id: '4ba2689cf964a520f8f537e3',
+		imgUrl: 'https://foursquare.com/v/olney-branch--montgomery-public-library/4ba2689cf964a520f8f537e3?openPhotoId=5820f5a26401964ad56f431b',
+	}
 ];
 
 // this is the object called from ViewModel
