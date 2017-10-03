@@ -9,6 +9,15 @@ var prevInfoWindow;
 // each marker will show popupinfo upon clicking
 var locations = [
 	{
+		name: 'Catonsville Library',
+		streetAddress: '1100 Frederick Rd,',
+		cityAndZip: 'Catonsville, MD 21228',
+		lat: 39.270,
+		lng: -76.742,
+		id: '4b9f5d9ff964a5208f1e37e3',
+		imgUrl: 'https://outgress.com/proxy/iMuAdIkNXKGtIXYjbTqZf48Uu0c6dms5%2FVQkRFWjNssdXCS9e0Mjys3AUiIlUTUrMTyyZI1quQLvvXs9vu0kNog%2BfYqCnqq5hULtcMHWJShkWf4cRt1lhC15YQm1eQ1q%2FsX%2B7YAeaeJ5YS8%3D/image.png',
+	},
+	{
 		name: 'Central Library',
 		streetAddress: '10375 Little Patuxent Pkwy',
 		cityAndZip: 'Columbia, MD 21044',
@@ -16,15 +25,6 @@ var locations = [
 		lng: -76.860,
 		id: '582ccb21a8b55d58005fb2ce',
 		imgUrl: 'http://www.hoodpad.com/img/site/b1a93c4e735.jpg',
-	},
-	{
-		name: 'Miller Library',
-		streetAddress: '9421 Frederick Rd',
-		cityAndZip: 'Ellicott City, MD 21042',
-		lat: 39.272,
-		lng: -76.841,
-		id: '4b461f08f964a520181726e3',
-		imgUrl: 'http://www.columbiaengineering.com/Lists/Photos/Libraries/Miller%20Branch%20Library.jpg',
 	},
 	{
 		name: 'Elkridge Library',
@@ -45,22 +45,13 @@ var locations = [
 		imgUrl: 'https://s3.amazonaws.com/fun-dn.com/upload/620059_78805a-9c36edfc_large.jpg',
 	},
 	{
-		name: 'Savage Library',
-		streetAddress: '9525 Durness Ln',
-		cityAndZip: 'Laurel, MD 20723',
-		lat: 39.132,
-		lng: -76.838,
-		id: '4b881007f964a520cddc31e3',
-		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
-	},
-	{
-		name: 'Catonsville Library',
-		streetAddress: '1100 Frederick Rd,',
-		cityAndZip: 'Catonsville, MD 21228',
-		lat: 39.270,
-		lng: -76.742,
-		id: '4b9f5d9ff964a5208f1e37e3',
-		imgUrl: 'https://foursquare.com/v/catonsville-library/4b9f5d9ff964a5208f1e37e3?openPhotoId=515cb163e4b0246c71776827',
+		name: 'Miller Library',
+		streetAddress: '9421 Frederick Rd',
+		cityAndZip: 'Ellicott City, MD 21042',
+		lat: 39.272,
+		lng: -76.841,
+		id: '4b461f08f964a520181726e3',
+		imgUrl: 'http://www.columbiaengineering.com/Lists/Photos/Libraries/Miller%20Branch%20Library.jpg',
 	},
 	{
 		name: 'Olney Library',
@@ -69,7 +60,16 @@ var locations = [
 		lat: 39.276,
 		lng: -77.041,
 		id: '4ba2689cf964a520f8f537e3',
-		imgUrl: 'https://foursquare.com/v/olney-branch--montgomery-public-library/4ba2689cf964a520f8f537e3?openPhotoId=5820f5a26401964ad56f431b',
+		imgUrl: 'http://www.olneyartassociation.org/sites/default/files/field/image/Olney%20Library.png',
+	},
+	{
+		name: 'Savage Library',
+		streetAddress: '9525 Durness Ln',
+		cityAndZip: 'Laurel, MD 20723',
+		lat: 39.132,
+		lng: -76.838,
+		id: '4b881007f964a520cddc31e3',
+		imgUrl: 'http://3.bp.blogspot.com/-u_6cctA3TeQ/U6zJlAbkZTI/AAAAAAAAA1Y/kF3U2GJSdJ8/s1600/lib1.jpg',
 	}
 ];
 
